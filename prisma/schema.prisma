@@ -12,3 +12,44 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+model User {
+  id       String   @id @default(uuid())
+  email    String   @unique
+  password String
+  name     String
+  phone    String
+  domicile String
+  birthday DateTime
+  role     Role     @default(PESERTA)
+
+  events UserOnEvent[]
+}
+
+model Event {
+  id          String   @id @default(uuid())
+  title       String
+  description String
+  location    String
+  start       DateTime
+  end         DateTime
+  deadline    DateTime
+
+  users UserOnEvent[]
+}
+
+model UserOnEvent {
+  userId String
+  eventId String
+
+  user    User     @relation(fields: [userId], references: [id])
+  event   Event    @relation(fields: [eventId], references: [id])
+
+  @@id([userId, eventId])
+}
+
+
+enum Role {
+  PESERTA
+  ADMIN
+}
