@@ -30,7 +30,7 @@ model Event {
   id          String   @id @default(uuid())
   title       String
   description String
-  topic       String
+  topic       String?
   location    String
   start       DateTime
   end         DateTime
